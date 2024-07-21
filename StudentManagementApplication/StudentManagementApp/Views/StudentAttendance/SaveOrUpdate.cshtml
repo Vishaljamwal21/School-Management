@@ -1,0 +1,87 @@
+﻿@model StudentManagementApp.Models.StudentAttendance
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">@(Model.Id == 0 ? "Add Student Attendance" : "Update Student Attendance")</h2>
+
+                    <form asp-action="SaveOrUpdate" method="post" id="attendanceForm" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="form-group">
+                            <label asp-for="ClassId" class="control-label">Class</label>
+                            <select asp-for="ClassId" class="form-control" required>
+                                <option value="">Select Class</option>
+                                @* Assuming you have classes available in ViewBag.Classes *@
+                                @foreach (var cls in ViewBag.Classes)
+                                {
+                                    <option value="@cls.ClassId">@cls.ClassName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ClassId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="SubjectId" class="control-label">Subject</label>
+                            <select asp-for="SubjectId" class="form-control" required>
+                                <option value="">Select Subject</option>
+                                @* Assuming you have subjects available in ViewBag.Subjects *@
+                                @foreach (var sub in ViewBag.Subjects)
+                                {
+                                    <option value="@sub.SubjectId">@sub.SubjectName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="SubjectId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="RollNo" class="control-label">Roll No</label>
+                            <input asp-for="RollNo" class="form-control" required />
+                            <span asp-validation-for="RollNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label">Status</label>
+                            <select asp-for="Status" class="form-control" required>
+                                <option value="">Select Status</option>
+                                <option value="true">Present</option>
+                                <option value="false">Absent</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Date" class="control-label">Date</label>
+                            <input asp-for="Date" class="form-control" type="date" required
+                                   min="@DateTime.Today.ToString("yyyy-MM-dd")" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#attendanceForm').submit(function (e) {
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        });
+    </script>
+}

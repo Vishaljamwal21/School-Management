@@ -1,0 +1,96 @@
+﻿/* Sidebar styles */
+.sidebar {
+    background-color: #000;
+    border-right: 1px solid #ddd;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    transition: all 0.3s;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+/* Responsive sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* Sidebar navigation styles */
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .sidebar-nav .nav-item {
+        padding: 10px;
+    }
+
+    .sidebar-nav .nav-link {
+        color: #fff;
+    }
+
+/* Dropdown styles */
+.dropdown-menu {
+    background-color: #000;
+}
+
+    .dropdown-menu .dropdown-item {
+        color: #fff;
+    }
+
+/* Logout button styles */
+.logout-btn {
+    margin-top: auto;
+}
+
+.btn-yellow {
+    background-color: yellow;
+    border-color: yellow;
+}
+
+    .btn-yellow:hover {
+        background-color: #ffeb3b; /* Darker yellow on hover */
+        border-color: #ffeb3b; /* Darker yellow on hover */
+    }
+/* Sidebar styles */
+.sidebar {
+    background-color: #000;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    overflow-y: auto; /* Add scrollbar when content exceeds height */
+    transition: all 0.3s;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: all 0.3s;
+}

@@ -1,0 +1,54 @@
+﻿@model StudentManagementApp.Models.Fee
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">@(Model.FeesId == 0 ? "Add Fee" : "Update Fee")</h2>
+
+                    <form asp-action="SaveOrUpdate" method="post" id="feeForm" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="FeesId" />
+
+                        <div class="form-group">
+                            <label asp-for="FeesAmount" class="control-label"></label>
+                            <input asp-for="FeesAmount" class="form-control" min="500" max="20000" required />
+                            <span asp-validation-for="FeesAmount" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label asp-for="ClassId" class="control-label">Class</label>
+                            <select asp-for="ClassId" class="form-control" asp-items="@(new SelectList(ViewBag.Classes, "ClassId", "ClassName", Model.ClassId)) " required>
+                                <option value="">Select Class</option>
+                            </select>
+                            <span asp-validation-for="ClassId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#feeForm').submit(function (e) {
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        });
+    </script>
+}

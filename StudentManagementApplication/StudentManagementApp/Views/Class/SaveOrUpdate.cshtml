@@ -1,0 +1,33 @@
+﻿@model StudentManagementApp.Models.Class
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">@(Model.ClassId == 0 ? "Create Class" : "Update Class")</h2>
+
+                    <form asp-action="SaveOrUpdate" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ClassId" />
+
+                        <div class="form-group">
+                            <label asp-for="ClassName" class="control-label"></label>
+                            <input asp-for="ClassName" class="form-control" />
+                            <span asp-validation-for="ClassName" class="text-danger"></span>
+                        </div>
+                        </br>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

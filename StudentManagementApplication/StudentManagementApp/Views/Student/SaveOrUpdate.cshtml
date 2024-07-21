@@ -1,0 +1,91 @@
+﻿@model StudentManagementApp.Models.Student
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">@(Model.StudentId == 0 ? "Add Student" : "Update Student")</h2>
+
+                    <form asp-action="SaveOrUpdate" method="post" id="studentForm" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="StudentId" />
+
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Dob" class="control-label"></label>
+                            <input asp-for="Dob" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                            <span asp-validation-for="Dob" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Gender" class="control-label"></label>
+                            <select asp-for="Gender" class="form-control" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Mobile" class="control-label"></label>
+                            <input asp-for="Mobile" class="form-control" type="tel" pattern="[0-9]{10}" title="Mobile number must be 10 digits" required />
+                            <span asp-validation-for="Mobile" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="RollNo" class="control-label"></label>
+                            <input asp-for="RollNo" class="form-control" required />
+                            <span asp-validation-for="RollNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Address" class="control-label"></label>
+                            <input asp-for="Address" class="form-control" required />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ClassId" class="control-label">Class</label>
+                            <select asp-for="ClassId" class="form-control" required>
+                                <option value="">Select Class</option>
+                                @foreach (var classItem in ViewBag.Classes)
+                                {
+                                    <option value="@classItem.ClassId">@classItem.ClassName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ClassId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#studentForm').submit(function (e) {
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        });
+    </script>
+}

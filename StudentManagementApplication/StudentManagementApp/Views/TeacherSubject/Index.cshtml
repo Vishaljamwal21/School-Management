@@ -1,0 +1,26 @@
+﻿<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary">Teacher Subjects</h2>
+    </div>
+    <div class="col-3">
+        <a class="btn btn-success form-control" asp-action="SaveorUpdate">
+            <i class="fas fa-plus"></i>
+            Add Teacher Subjects
+        </a>
+    </div>
+</div>
+<div class="container rounded border table-responsive m-2 p-2">
+    <table id="tabledata" class="table table-bordered table-active table-striped">
+        <thead>
+            <tr>
+                <th>Teacher</th>
+                <th>Class</th>
+                <th>Subject</th>
+                <th>Action Buttons</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section scripts {
+    <script src="~/js/TeacherSubject.js"></script>
+}

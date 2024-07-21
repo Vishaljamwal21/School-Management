@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var isAuthenticated = !string.IsNullOrEmpty(Context.Session.GetString("Token"));
+    var userEmail = SessionHandler.GetUserEmail(Context);
+    var userRole = SessionHandler.GetUserRole(Context);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - StudentManagementApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StudentManagementApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://kit.fontawesome.com/e19c476714.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <!-- Navbar content -->
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="school-logo text-center my-1">
+                    <img src="https://media.istockphoto.com/id/1172148782/vector/university-campus-logo-with-text-space-for-your-slogan-tag-line.jpg?s=612x612&w=0&k=20&c=lJKl1QKcLrIGX1iZTUHxz0qaGEO-GSeUP7AV1kNcKgg=" class="img-fluid" alt="School Logo" width="100" height="100">
+                    <div>
+                        <p class="text-white"><i class="fas fa-map-marker-alt text-white"></i> Chandigarh, India</p>
+                    </div>
+                    <span class="nav-link text-white mr-3">Hii !: @userRole</span>
+                </div>
+                <!-- Sidebar content -->
+                <ul class="nav flex-column sidebar-nav">
+                    @if (isAuthenticated && userRole == "Admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Class" asp-action="Index"><i class="fas fa-chalkboard-teacher"></i> Class</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Subject" asp-action="Index"><i class="fas fa-book-open"></i> Subject</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Teacher" asp-action="Index"><i class="fas fa-user-tie"></i> Teachers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="TeacherSubject" asp-action="Index"><i class="fas fa-list-alt"></i> Teacher Subjects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="TeacherAttendance" asp-action="Index"><i class="fas fa-calendar-check"></i> Teacher Attendance</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Expense" asp-action="Index"><i class="fas fa-receipt"></i> Expense</a>
+                        </li>
+                    }
+                    else if (isAuthenticated && userRole == "Teacher")
+                    {
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Student" asp-action="Index"><i class="fas fa-user-graduate"></i> Student</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="StudentAttendance" asp-action="Index"><i class="fas fa-calendar-check"></i> Student Attendance</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Fee" asp-action="Index"><i class="fas fa-dollar-sign"></i> Fee</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Exam" asp-action="Index"><i class="fas fa-pencil-alt"></i> Exam</a>
+                        </li>
+
+                    }
+                    <!-- Navigation links -->
+                  
+                </ul>
+                <ul class="navbar-nav mt-auto">
+                    @if (isAuthenticated)
+                    {
+                       
+                        
+                        <form asp-area="" asp-controller="User" asp-action="Logout" method="post" class="form-inline">
+                            <button type="submit" class="nav-link btn btn-danger text-white"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </form>
+                        @if (isAuthenticated && userRole == "Admin")
+                        {
+                            <div>
+                                <a class="btn btn-yellow text-dark" asp-area="" asp-controller="User" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
+                            </div>
+                            <br>
+                        }
+                        else if (User.IsInRole("Teacher"))
+                        {
+                            <!-- Render Teacher-specific content here -->
+                        }
+                    }
+                    else
+                    {
+                        <div>
+                            <a class="btn btn-yellow text-dark" asp-area="" asp-controller="User" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
+                        </div>
+                        <br>
+                        <div>
+                            <a class="btn btn-primary text-white" asp-area="" asp-controller="User" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        </div>
+                    }
+                </ul>
+
+            </div>
+            <!-- Main content -->
+            <div class="col-md-10 offset-md-2 main-content">
+                <header>
+                    <h1 class="school-name text-center">Carmel Convent School</h1>
+                </header>
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+    @*
+    <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2024 - StudentManagementApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+    </footer> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://kit.fontawesome.com/e19c476714.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
